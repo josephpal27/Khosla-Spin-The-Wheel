@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify User</title>
+    <link rel="stylesheet" href="assets/css/login.css">
+</head>
+
+<body>
+    
+    <section class="login-container">
+        <div class="logo">
+            <img src="assets/images/logo.png" alt="logo">
+        </div>
+        <div class="form">
+            <form action="index.html">
+                <div class="input-box">
+                    <input type="number" placeholder="Enter Your Phone Number" required>
+                </div>
+                <div class="input-box">
+                    <input type="number" placeholder="Enter OTP" required>
+                    <button type="button" class="btn" id="getOtpBtn">GET OTP</button>
+                </div>
+                <div class="input-box">
+                    <button type="submit" class="btn">LOGIN</button>
+                </div>
+            </form>
+            <span id="otpMsg" class="hide">OTP Sent Successfully</span>
+        </div>
+    </section>
+
+    <script>
+        let getOtpBtn = document.querySelector("#getOtpBtn");
+        let msg = document.querySelector("#otpMsg");
+
+        getOtpBtn.addEventListener("click", () => {
+            msg.classList.remove("hide");
+        })
+    </script>
+</body>
+
+</html>
+    </script>
+</body>
+
+
+</html>

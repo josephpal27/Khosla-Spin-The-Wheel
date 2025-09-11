@@ -1,0 +1,126 @@
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #ffc1c4, #ffd5d8);
+    font-family: "Poppins", sans-serif;
+    color: #fff;
+}
+
+.login-container {
+    width: 40%;
+    max-width: 800px; 
+    padding: 3.5rem 2.5rem;
+    background-color: #fff;
+    border-radius: 30px;
+    border: 2px solid #ed1b24;
+    box-shadow: #ed1b24 0px 5px 15px;
+    box-sizing: border-box;
+}
+
+.login-container .logo {
+    display: flex;
+    justify-content: center;
+}
+
+.form {
+    margin-top: 4rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.input-box {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.input-box input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border: 1px solid #ed1b24;
+    border-radius: 10px;
+    outline: none;
+    font-size: calc(0.7rem + 0.5vw);
+    color: #000;
+    box-sizing: border-box;
+}
+.input-box input:focus{
+    outline: 1.5px solid #ed1b24;
+}
+.input-box input::placeholder{
+    color: #636363;
+}
+.input-box input::-webkit-inner-spin-button {
+    display: none;
+}
+
+.input-box .btn {
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    background-color: #ed1b24;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+}
+.input-box .btn:active {
+    scale: 0.95;
+}
+
+.input-box .btn:hover {
+    background-color: #d9171a;
+}
+
+form .btn[type="submit"] {
+    width: 100%;
+    font-weight: 600;
+    font-size: calc(0.75rem + 0.5vw);
+}
+
+.login-container span{
+    color: #000;
+    font-weight: 550;
+    margin-top: 1rem;
+    display: block;
+    color: #ed1b24;
+}
+.login-container span.hide{
+    display: none;
+}
+
+
+@media screen and (max-width: 768px) {
+    .login-container {
+        width: 95%;
+        padding: 2rem 0.7rem;
+        border-radius: 20px;
+    }
+
+    .form {
+        margin-top: 3rem;
+    }
+
+    .input-box input {
+        padding: 0.8rem 0.5rem;
+        font-size: 1rem;
+    }
+
+    .input-box .btn {
+        padding: 0.8rem 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    form .btn[type="submit"] {
+        font-size: 1rem;
+    }
+
+    .login-container span {
+        font-size: 0.9rem;
+    }
+}
