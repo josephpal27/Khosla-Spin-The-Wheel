@@ -2,6 +2,17 @@ const wheel = document.getElementById("wheel");
 const spinBtn = document.getElementById("spin-btn");
 const finalValue = document.getElementById("final-value");
 const claimBtn = document.getElementById("claim-btn");
+const submitBtn = document.getElementById("submit-btn");
+const uniqueIdInput = document.getElementById("unique-id");
+
+// Disable spin button on load
+spinBtn.disabled = true;
+
+// Notyf instance for notifications
+const notyf = new Notyf({
+  duration: 2000,
+  position: { x: "end", y: "top" },
+});
 
 // Labels & Images
 const labels = ["10%", "", "₹100", "Microwave", "₹500", "Iron"];
@@ -42,7 +53,7 @@ preloadImages(imageSrcs).then((loadedImgs) => {
   const pieColors = ["#fe504f", "#fff", "#fe504f", "#fff", "#fe504f", "#fff"];
 
   // Chart.js Wheel
-  let myChart = new Chart(wheel, {
+  const myChart = new Chart(wheel, {
     type: "pie",
     data: {
       labels: labels,
@@ -76,11 +87,9 @@ preloadImages(imageSrcs).then((loadedImgs) => {
           const centerY = (top + bottom) / 2;
           const radius = Math.min(right - left, bottom - top) / 2;
 
-          // Responsive font size
           const fontSize = window.innerWidth < 768 ? 12 : 15;
           ctx.font = `bold ${fontSize}px Poppins`;
 
-          // Draw images and text at outer edge of each slice
           meta.data.forEach((arc, i) => {
             const img = loadedImgs[i];
             const angle = (arc.startAngle + arc.endAngle) / 2;
@@ -91,10 +100,8 @@ preloadImages(imageSrcs).then((loadedImgs) => {
 
             if (img) {
               ctx.drawImage(img, x - 20, y - 20, 35, 35);
-
               const bgColor = pieColors[i];
               ctx.fillStyle = bgColor === "#fe504f" ? "#fff" : "#000";
-
               ctx.textAlign = "center";
               ctx.fillText(labels[i], x, y + 35);
             }
@@ -149,21 +156,40 @@ preloadImages(imageSrcs).then((loadedImgs) => {
         myChart.options.rotation = finalDegree;
         myChart.update();
 
-        // Determine Result
         const segAngle = 360 / labels.length;
         const index = Math.floor(
           (labels.length - finalDegree / segAngle) % labels.length
         );
 
-        // Show custom message in red
         finalValue.innerHTML = `<p style="color:red;">${messages[index]}</p>`;
-
-        // Hide spin button, show claim reward button
-        spinBtn.classList.add("hide");
-        claimBtn.classList.remove("hide");
+        spinBtn.classList.add("hide"); // Hide spin button
+        claimBtn.classList.remove("hide"); // Show claim button
       }
     }
 
     requestAnimationFrame(animate);
   });
+});
+
+// Static frontend verification with dynamic reset
+submitBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  const code = uniqueIdInput.value.trim();
+
+  if (!code) {
+    notyf.error("Please enter unique code!");
+    spinBtn.disabled = true;
+    return;
+  }
+
+  if (code === "1234") {
+    notyf.success("Code Verified!");
+    spinBtn.disabled = false; // Enable spin button
+    spinBtn.classList.remove("hide"); // Show spin button
+    claimBtn.classList.add("hide"); // Hide claim button if it was shown
+    finalValue.innerHTML = ""; // Clear previous result
+  } else {
+    notyf.error("Invalid Code!");
+    spinBtn.disabled = true; // Keep spin button disabled
+  }
 });

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Khosla Electronics Spin & Win</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
@@ -14,14 +15,19 @@
         <img class="arrow" src="assets/images/arrow-bottom.png" alt="arrow" />
         <canvas id="wheel"></canvas>
         <div class="btn-row">
+             <form action="#"> <!-- Redirect to backend page to verify unique code -->
+                <input type="text" placeholder="Enter Your Unique Code" id="unique-id" required>
+                <button id="submit-btn" type="submit">VERIFY</button>
+            </form>
             <button id="spin-btn">SPIN</button>
-            <a href="#"><button id="claim-btn" class="hide">CLAIM REWARD</button></a>
+            <a href="#"><button id="claim-btn" class="hide">CLAIM REWARD</button></a> <!-- Redirect to backend page for rewards -->
         </div>
         <div id="final-value">
             <p></p>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
     <script src="assets/js/script.js"></script>
 
 </body>
