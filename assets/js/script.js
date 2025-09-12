@@ -1,64 +1,169 @@
 const wheel = document.getElementById("wheel");
-    const spinBtn = document.getElementById("spin-btn");
-    const claimBtn = document.getElementById("claim-btn");
-    const result = document.getElementById("result");
+const spinBtn = document.getElementById("spin-btn");
+const finalValue = document.getElementById("final-value");
+const claimBtn = document.getElementById("claim-btn");
 
-    const prizes = [
-      "Better Luck Next Time",
-      "You Have Won ₹100 Cashback",
-      "You Have Won ₹500 Cashback",
-      "You Have Won a Microwave",
-      "You Have Won an Iron",
-      "You Have Won 10% Discount Coupon",
-    ];
+// Labels & Images
+const labels = ["10%", "", "₹100", "Microwave", "₹500", "Iron"];
+const imageSrcs = [
+  "assets/images/voucher.png",
+  "assets/images/oops.png",
+  "assets/images/money.png",
+  "assets/images/oven.png",
+  "assets/images/money.png",
+  "assets/images/iron.png",
+];
 
-    const sliceAngle = 360 / prizes.length;
-    let currentRotation = 0;
-    let alreadySpun = false; // only 1 spin allowed
+// Custom messages for each slice
+const messages = [
+  "🎁 You Have Won 10% Discount Coupon!",
+  "Better Luck Next Time!",
+  "🎁 You Have Won ₹100 Cashback!",
+  "🎁 You Have Won Microwave!",
+  "🎁 You Have Won ₹500 Cashback!",
+  "🎁 You Have Won Iron!",
+];
 
-    spinBtn.addEventListener("click", () => {
-      if (alreadySpun) return;
-      alreadySpun = true;
+// Preload images
+function preloadImages(sources) {
+  return Promise.all(
+    sources.map((src) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.src = src;
+      });
+    })
+  );
+}
 
-      spinBtn.disabled = true;
-      result.textContent = "Good Luck!";
+preloadImages(imageSrcs).then((loadedImgs) => {
+  const data = [16, 16, 16, 16, 16, 16];
+  const pieColors = ["#fe504f", "#fff", "#fe504f", "#fff", "#fe504f", "#fff"];
 
-      const randomIndex = Math.floor(Math.random() * prizes.length);
-      const targetAngle = 360 - (randomIndex * sliceAngle + sliceAngle / 2);
-      const spins = 6; // full rotations
-      const totalRotation = spins * 360 + targetAngle;
+  // Chart.js Wheel
+  let myChart = new Chart(wheel, {
+    type: "pie",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          data: data,
+          backgroundColor: pieColors,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      animation: { duration: 0 },
+      plugins: {
+        tooltip: false,
+        legend: false,
+      },
+    },
+    plugins: [
+      {
+        id: "imagesAndText",
+        afterDraw: (chart) => {
+          const {
+            ctx,
+            chartArea: { left, right, top, bottom },
+          } = chart;
+          const meta = chart.getDatasetMeta(0);
+          ctx.save();
 
-      gsap.to(wheel, {
-        rotation: totalRotation,
-        duration: 5,
-        ease: "power4.out",
-        onComplete: () => {
-          currentRotation = totalRotation % 360;
-          result.textContent = `🎁 ${prizes[randomIndex]}!`;
+          const centerX = (left + right) / 2;
+          const centerY = (top + bottom) / 2;
+          const radius = Math.min(right - left, bottom - top) / 2;
 
-          // Bounce effect
-          gsap.to(wheel, {
-            rotation: "+=5",
-            duration: 0.3,
-            yoyo: true,
-            repeat: 1,
-            ease: "power1.inOut",
+          // Responsive font size
+          const fontSize = window.innerWidth < 768 ? 12 : 15;
+          ctx.font = `bold ${fontSize}px Poppins`;
+
+          // Draw images and text at outer edge of each slice
+          meta.data.forEach((arc, i) => {
+            const img = loadedImgs[i];
+            const angle = (arc.startAngle + arc.endAngle) / 2;
+            const imgRadius = radius - 70;
+
+            const x = centerX + imgRadius * Math.cos(angle);
+            const y = centerY + imgRadius * Math.sin(angle);
+
+            if (img) {
+              ctx.drawImage(img, x - 20, y - 20, 35, 35);
+
+              const bgColor = pieColors[i];
+              ctx.fillStyle = bgColor === "#fe504f" ? "#fff" : "#000";
+
+              ctx.textAlign = "center";
+              ctx.fillText(labels[i], x, y + 35);
+            }
           });
 
-          spinBtn.disabled = true;
-          spinBtn.style.opacity = "0.5"; // faded
-          spinBtn.classList.add("hide");
+          // Outer yellow border
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, radius - 2, 0, 2 * Math.PI);
+          ctx.lineWidth = 5;
+          ctx.strokeStyle = "#fed700";
+          ctx.stroke();
 
-          // Show claim button only if prize is not "Better Luck Next Time"
-          if (prizes[randomIndex] === "Better Luck Next Time") {
-            claimBtn.disabled = true;
-            claimBtn.classList.remove("hide"); // show but disabled
-            claimBtn.style.opacity = "0.5"; // visually indicate disabled
-          } else {
-            claimBtn.disabled = false;
-            claimBtn.classList.remove("hide");
-            claimBtn.style.opacity = "1";
-          }
+          // Center circle
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, 33, 0, 2 * Math.PI);
+          ctx.fillStyle = "#fed700";
+          ctx.fill();
+          ctx.lineWidth = 4;
+          ctx.strokeStyle = "#fff";
+          ctx.stroke();
+
+          ctx.restore();
         },
-      });
-    });
+      },
+    ],
+  });
+
+  // Spin Animation
+  spinBtn.addEventListener("click", () => {
+    spinBtn.disabled = true;
+    finalValue.innerHTML = `<p style="color:red;">Good Luck!</p>`;
+
+    const randomDegree = Math.floor(Math.random() * 360);
+    const totalRotation = 360 * 10 + randomDegree;
+    const duration = 5000;
+    let start = null;
+
+    function animate(timestamp) {
+      if (!start) start = timestamp;
+      const elapsed = timestamp - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const easedProgress = 1 - Math.pow(1 - progress, 3);
+      const currentRotation = easedProgress * totalRotation;
+
+      myChart.options.rotation = currentRotation % 360;
+      myChart.update();
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        const finalDegree = randomDegree % 360;
+        myChart.options.rotation = finalDegree;
+        myChart.update();
+
+        // Determine Result
+        const segAngle = 360 / labels.length;
+        const index = Math.floor(
+          (labels.length - finalDegree / segAngle) % labels.length
+        );
+
+        // Show custom message in red
+        finalValue.innerHTML = `<p style="color:red;">${messages[index]}</p>`;
+
+        // Hide spin button, show claim reward button
+        spinBtn.classList.add("hide");
+        claimBtn.classList.remove("hide");
+      }
+    }
+
+    requestAnimationFrame(animate);
+  });
+});

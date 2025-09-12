@@ -1,167 +1,145 @@
- body {
-     margin: 0;
-     height: 100vh;
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     background: linear-gradient(135deg, #ffc1c4, #ffd5d8);
-     font-family: "Poppins", sans-serif;
-     color: #fff;
- }
-
- .wrapper {
-     position: relative;
-     text-align: center;
-     width: 100%;
-     height: 100%;
-     display: flex;
-     flex-direction: column;
-     align-items: center;
- }
-
- #wheel {
-     width: 400px;
-     height: 400px;
-     filter: drop-shadow(0px 8px 15px rgba(255, 255, 255, 0.4));
-     margin-top: 6rem;
- }
-
- #arrow {
-     position: absolute;
-     top: -5px;
-     left: 50%;
-     width: 70px;
-     transform: translateX(-50%);
-     filter: drop-shadow(0px 0px 10px rgba(255, 83, 83, 0.6));
-     z-index: 100;
-     animation: float 1s ease-in-out infinite alternate;
- }
-
- @keyframes float {
-  0%   { transform: translateX(-50%) translateY(0); }
-  100% { transform: translateX(-50%) translateY(10px); }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
 
- .btn-row button {
-     margin: 40px 10px 0 10px;
-     padding: 15px 40px;
-     font-size: 1.2rem;
-     font-weight: bold;
-     border: none;
-     border-radius: 50px;
-     cursor: pointer;
-     background: linear-gradient(135deg, #ffd700, #ffa500);
-     color: #000;
-     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-     transition: transform 0.2s ease;
- }
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #ffc1c4, #ffd5d8);
+    overflow: hidden;
+}
 
- .btn-row button:active {
-     transform: scale(0.95);
- }
+.wrapper {
+    width: 90%;
+    padding: 0;
+    text-align: center;
+}
 
- .btn-row button.hide {
-     display: none;
- }
+#wheel {
+    width: 100%;
+    max-height: 420px;
+    margin-top: 0.5rem;
+}
 
- #result {
-     margin-top: 35px;
-     font-size: calc(1rem + 0.5vw);
-     font-weight: bold;
-     color: #ff0000;
-     margin-bottom: 2rem;
- }
+button {
+    margin-top: 2rem;
+    padding: 12px 40px;
+    font-size: 1.2rem;
+    font-weight: 550;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ffd700, #ffa500);
+    color: #000;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
 
- text {
-     font-size: calc(0.75rem + 0.5vw);
-     font-weight: bold;
- }
+button:active {
+    scale: 0.95;
+}
 
+button.hide {
+    display: none;
+}
 
- /* Media Queries */
-@media screen and (min-width: 1230px) and (max-width: 1399px){
-    #arrow {
+#final-value {
+    margin-top: 30px;
+    font-size: calc(1rem + 0.5vw);
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.arrow {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    width: 70px;
+    transform: translateX(-50%);
+    filter: drop-shadow(0px 0px 10px rgba(255, 83, 83, 0.6));
+    animation: float 1s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+    0% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(10px);
+    }
+}
+
+/* Media Queries */
+@media screen and (min-width: 1230px) and (max-width: 1399px) {
+    .arrow {
         width: 65px;
     }
 
-     #wheel {
-        margin-top: 5rem;
+    #wheel {
+        max-height: 380px;
+        margin-top: 1rem;
     }
 
-    .btn-row button {
-        margin: 40px 10px 0 10px;
-        padding: 13px 35px;
+    button {
+        padding: 11px 35px;
         font-size: 1.1rem;
     }
 
-    #result {
-        margin-top: 30px;
-        font-size: calc(1rem + 0.5vw);
-    }
-
-    text {
-        font-size: calc(0.8rem + 0.5vw);
+    #final-value {
+        font-size: calc(0.95rem + 0.5vw);
     }
 }
 
-@media screen and (min-width: 992px) and (max-width: 1229px){
-    #arrow {
-        width: 57px;
+@media screen and (min-width: 992px) and (max-width: 1229px) {
+    .arrow {
+        width: 50px;
     }
 
-     #wheel {
-        margin-top: 4.5rem;
+    #wheel {
+        max-height: 360px;
+        margin-top: 1rem;
     }
 
-    .btn-row button {
-        margin: 35px 10px 0 10px;
-        padding: 11px 30px;
+    button {
+        padding: 9px 30px;
         font-size: 1rem;
     }
 
-    #result {
-        margin-top: 25px;
-        font-size: calc(0.8rem + 0.5vw);
-        margin-bottom: 2rem;
-    }
-
-    text {
+    #final-value {
         font-size: calc(0.85rem + 0.5vw);
+        margin-top: 20px;
     }
 }
 
 @media screen and (max-width: 768px) {
-    body{
+    body {
         overflow: hidden;
     }
+
     .wrapper {
         overflow: hidden;
     }
 
-    #arrow {
+    .arrow {
         top: 0;
         width: 50px;
     }
 
     #wheel {
-        margin-top: 5rem;
-        width: 300px;
-        height: 300px;
+        margin-top: 0;
     }
 
-    .btn-row button {
-        margin: 3rem 10px 0 10px;
-        padding: 11px 30px;
-        font-size: 1rem;
+    button {
+        padding: 10px 30px;
+        font-size: 1.1rem;
     }
 
-    #result {
-        margin-top: 25px;
+    #final-value {
         font-size: calc(1.1rem + 0.5vw);
-        margin-bottom: 0;
-    }
-
-    text {
-        font-size: calc(1.3rem + 0.5vw);
     }
 }
