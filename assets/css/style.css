@@ -54,6 +54,10 @@ body {
     color: #fff;
 }
 
+.btn-row input:focus::placeholder {
+  color: transparent;
+}
+
 button {
     margin-top: 2rem;
     padding: 12px 40px;
