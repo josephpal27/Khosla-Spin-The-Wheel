@@ -1,6 +1,6 @@
 const wheel = document.getElementById("wheel");
 const spinBtn = document.getElementById("spin-btn");
-const finalValue = document.getElementById("final-value");
+const finalValue = document.querySelector("#final-value p");
 const claimBtn = document.getElementById("claim-btn");
 const submitBtn = document.getElementById("submit-btn");
 const uniqueIdInput = document.getElementById("unique-id");
@@ -132,7 +132,8 @@ preloadImages(imageSrcs).then((loadedImgs) => {
   // Spin Animation
   spinBtn.addEventListener("click", () => {
     spinBtn.disabled = true;
-    finalValue.innerHTML = `<p style="color:red;">Good Luck!</p>`;
+    finalValue.innerHTML = `<p style="color:#fff;">Good Luck!</p>`;
+    finalValue.classList.add("show");
 
     const randomDegree = Math.floor(Math.random() * 360);
     const totalRotation = 360 * 10 + randomDegree;
@@ -161,7 +162,7 @@ preloadImages(imageSrcs).then((loadedImgs) => {
           (labels.length - finalDegree / segAngle) % labels.length
         );
 
-        finalValue.innerHTML = `<p style="color:red;">${messages[index]}</p>`;
+        finalValue.innerHTML = `<p style="color:#fff;">${messages[index]}</p>`;
         spinBtn.classList.add("hide"); // Hide spin button
         claimBtn.classList.remove("hide"); // Show claim button
       }
@@ -188,6 +189,7 @@ submitBtn.addEventListener("click", (e) => {
     spinBtn.classList.remove("hide"); // Show spin button
     claimBtn.classList.add("hide"); // Hide claim button if it was shown
     finalValue.innerHTML = ""; // Clear previous result
+    finalValue.classList.remove("show");
   } else {
     notyf.error("Invalid Code!");
     spinBtn.disabled = true; // Keep spin button disabled

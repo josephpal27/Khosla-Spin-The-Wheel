@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    
+
     <section class="login-container">
         <div class="logo">
             <img src="assets/images/logo.png" alt="logo">
@@ -32,18 +32,41 @@
     </section>
 
     <script>
+        // OTP Function
         let getOtpBtn = document.querySelector("#getOtpBtn");
         let msg = document.querySelector("#otpMsg");
 
         getOtpBtn.addEventListener("click", () => {
             msg.classList.remove("hide");
         })
-    </script>
-</body>
 
-</html>
-    </script>
-</body>
+        // Form Animation to Top on focus
+        const loginContainer = document.querySelector(".login-container");
+        const inputs = document.querySelectorAll("input");
+        const loginBtn = document.querySelector('form .btn[type="submit"]');
 
+        inputs.forEach(input => {
+            input.addEventListener("focus", () => {
+                loginContainer.classList.add("move-up");
+            });
+        });
+
+        getOtpBtn.addEventListener("click", () => {
+            loginContainer.classList.add("move-up");
+        });
+
+        loginBtn.addEventListener("click", () => {
+            loginContainer.classList.add("move-up");
+        });
+
+        // reset position if user taps outside form
+        document.addEventListener("click", (e) => {
+            if (!loginContainer.contains(e.target) && !e.target.closest("input")) {
+                loginContainer.classList.remove("move-up");
+            }
+        });
+    </script>
+
+</body>
 
 </html>
